@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 	public float shipSpeed;
 	public float responsiveness;
 	public float shieldDistance;
+	private bool floatUp = true;
 
 	[SerializeField]
 	private float playerSpeed = 0.5f;
@@ -36,8 +37,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 	private float parryMeterSpeed;
 	[SerializeField]
 	private float parryMeter;
-
-
 	[SerializeField]
 	private AudioSource audioSource;
 
@@ -73,6 +72,8 @@ public class PlayerController : MonoBehaviour, IDamagable
 		rigidBody = gameObject.GetComponent<Rigidbody2D>();
 		spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 		gameObject.GetComponent<UniversalBar>().maxValue = maxParryMeter;
+
+		StartCoroutine(FloatTimer());
 	}
 	void Update()
 	{
@@ -80,6 +81,12 @@ public class PlayerController : MonoBehaviour, IDamagable
 		else parryMeter = maxParryMeter;
 
 		gameObject.GetComponent<UniversalBar>().SetBarValue(parryMeter);
+
+		if (floatUp)
+		{
+			transform.localScale = transform.localScale + new Vector3(0.07f, 0.07f, 0f) * Time.deltaTime;
+		}
+		else transform.localScale = transform.localScale - new Vector3(0.07f, 0.07f, 0f) * Time.deltaTime;
 	}
 
 	void FixedUpdate()
@@ -186,6 +193,15 @@ public class PlayerController : MonoBehaviour, IDamagable
 			//Destroy(gameObject, 0.5f);
 			spriteRenderer.enabled = false;
 			enabled = false;
+		}
+	}
+
+	IEnumerator FloatTimer()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(1f);
+			floatUp = !floatUp;
 		}
 	}
 }
