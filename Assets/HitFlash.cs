@@ -9,8 +9,8 @@ public class HitFlash : MonoBehaviour
     [SerializeField] private float returnSpeed;
 	[SerializeField] private Light2D shieldLight;
 
-	private float startIntensity;
-    void Start()
+	[SerializeField] private float startIntensity;
+    void Awake()
     {
         startIntensity = shieldLight.intensity;
     }

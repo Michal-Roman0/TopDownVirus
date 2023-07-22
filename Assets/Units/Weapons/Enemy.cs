@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour, IDamagable
 
     [SerializeField] protected GameObject explosionEffect;
     protected Rigidbody2D rb;
+    protected float maxHeight = -3f;
 
 	public int Health {
         get { return health; }
@@ -23,15 +24,18 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         Init();
 
-        rb.velocity = Vector2.up * speed;
     }
+
 
     protected virtual void Init()
     {
         rb = GetComponent<Rigidbody2D>();
         target = GameObject.FindWithTag("Player");
+        maxHeight = Random.Range(-3f, 3f);
+		speed = Random.Range(1f, 3f);
+        shootingDelay = Random.Range(0.5f, 2f);
 
-        StartCoroutine(ShootTimer());
+		StartCoroutine(ShootTimer());
     }
     protected virtual void Update()
     {
@@ -40,8 +44,15 @@ public class Enemy : MonoBehaviour, IDamagable
 
     protected virtual void Move()
     {
-        
-    }
+		if (transform.position.y < maxHeight)
+		{
+			rb.velocity = Vector2.up * speed;
+		}
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
+	}
 
     IEnumerator ShootTimer()
     {
@@ -64,6 +75,9 @@ public class Enemy : MonoBehaviour, IDamagable
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
             gameObject.GetComponent<Collider2D>().enabled = false;
             gameObject.GetComponent<HitFlash>().Flash(25f);
+
+            GameInfo.Instance.enemiesLeft--;
+
             Destroy(gameObject, 0.1f);
         }
 	}

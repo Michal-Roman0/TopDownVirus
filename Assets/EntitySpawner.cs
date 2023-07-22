@@ -8,23 +8,20 @@ public class EntitySpawner : MonoBehaviour
     [SerializeField] private GameObject entityPrefab;
     [SerializeField] private float cooldown;
     [SerializeField] private bool spawn = true;
-    void Start()
-    {
-        StartCoroutine(SpawnTimer(cooldown));
-    }
+    [SerializeField] private int amount;
 
-    // Update is called once per frame
-    void Update()
+
+    public void SetupSpawner(float delay, int amount)
     {
-        
+        StartCoroutine(SpawnTimer(2f));
     }
     IEnumerator SpawnTimer(float seconds)
     {
-        while (spawn)
+        while (spawn && amount > 0)
         {
         yield return new WaitForSeconds(seconds);
             Instantiate(entityPrefab, new Vector3(transform.position.x + Random.Range(-3f, 3f), transform.position.y, 0), Quaternion.identity);
-
+            amount--;
         }
         
     }

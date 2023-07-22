@@ -9,7 +9,7 @@ using UnityEngine.Scripting.APIUpdating;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float reflectCooldown = 0.1f;
+    [SerializeField] private float reflectCooldown = 0.0f;
     private Rigidbody2D rb;
 	private AudioSource[] audio;
 	public Light2D glow;

@@ -10,11 +10,14 @@ public class ShieldController : MonoBehaviour
     public bool parryActive;
     public RaycastHit2D[] rayHit = new RaycastHit2D[10];
 	[SerializeField] GameObject parryBulletPrefab;
+    private ContactFilter2D cf;
 
 	void Start()
     {
         col = GetComponent<Collider2D>();
         audio = GetComponents<AudioSource>();
+        cf = new ContactFilter2D();
+        cf.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
     }
 
     void Update()
@@ -28,15 +31,15 @@ public class ShieldController : MonoBehaviour
     }
     public void Parry()
     {
-		int collisions = col.Cast(transform.up, new ContactFilter2D(), rayHit, 0.8f);
+		int collisions = col.Cast(transform.up, rayHit, 0.8f);
 		if (collisions > 0)
 		{
             for(int i = 0; i < collisions; i++)
             {
                 if (rayHit[i].transform.CompareTag("Bullet"))
                 {
-					Debug.Log(rayHit.Length);
-					Debug.DrawRay(rayHit[i].point, transform.up * 0.05f, Color.green, 10f);
+					//Debug.Log(rayHit.Length);
+					//Debug.DrawRay(rayHit[i].point, transform.up * 0.05f, Color.green, 10f);
                     //rayHit[i].transform.GetComponent<SpriteRenderer>().color = Color.red;
 
                     //rayHit[i].rigidbody.velocity *= 2;
@@ -53,7 +56,7 @@ public class ShieldController : MonoBehaviour
 
             audio[0].Play();
 		}
-		Debug.DrawRay(transform.position, transform.up * 0.5f, Color.yellow, 10f);
+		//Debug.DrawRay(transform.position, transform.up * 0.5f, Color.yellow, 10f);
 	}
 
 

@@ -114,9 +114,13 @@ public class PlayerController : MonoBehaviour, IDamagable
 
 
 		//---------------//
-		//Fireball shooting with mouse control:
+		//Shield steering with mouse control:
 		mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 		shootDir = (Vector3)mousePos - transform.position;
+
+		shootDir = Vector3.ClampMagnitude(shootDir,4f);
+		if (shootDir.sqrMagnitude < 1) shootDir = shootDir.normalized;
+
 		float angle = Mathf.Atan2(shootDir.y, shootDir.x) * Mathf.Rad2Deg - 90f;
 		firePoint.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 		firePoint.position = transform.position + shieldDistance * shootDir;
@@ -179,7 +183,9 @@ public class PlayerController : MonoBehaviour, IDamagable
 		if (Health < 1)
 		{
 			Instantiate(explosionEffect, transform.position, Quaternion.identity);
-			Destroy(gameObject, 0.5f);
+			//Destroy(gameObject, 0.5f);
+			spriteRenderer.enabled = false;
+			enabled = false;
 		}
 	}
 }

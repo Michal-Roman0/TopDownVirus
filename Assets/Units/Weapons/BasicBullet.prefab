@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 336d6a354598fa24ba101ea6153705a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reflectCooldown: 0.1
+  reflectCooldown: 0
   glow: {fileID: 8721688617308692114}
   endEffect: {fileID: 5272278797715238009, guid: c7823e973e1ac134ead67fef72373a23, type: 3}
   playerReflected: 0
